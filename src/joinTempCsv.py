@@ -13,4 +13,4 @@ for f in all_files:
     #print(f)
     
 merged_df = pd.concat(all_df, ignore_index=True, sort=True)
-merged_df.to_csv("../data/input/temperature.csv", index=False)
+merged_df.to_csv("../data/localData/temperature.csv", index=False)
