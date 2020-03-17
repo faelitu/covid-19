@@ -18,9 +18,10 @@ dfAux = df.shift()
 dfAux.iloc[0] = dfAux.iloc[1] 
 
 out = pd.DataFrame()
+out["date"] = df["index"]
 for cc in countrys:
     out[cc] = df[cc] - dfAux[cc]
     out[out[cc] < 0] = 0
 out = out.append(lat)
 out = out.append(longt)
-out.to_csv("../input/newCases.csv")
+out.to_csv("../data/localData/newCases.csv")
