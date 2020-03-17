@@ -21,4 +21,6 @@ out = pd.DataFrame()
 for cc in countrys:
     out[cc] = df[cc] - dfAux[cc]
     out[out[cc] < 0] = 0
+out = out.append(lat)
+out = out.append(longt)
 out.to_csv("coronga.csv")
