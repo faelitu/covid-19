@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("full_data.csv")
 df.fillna(0, inplace=True)  
 
-locations = ["Brazil", "Italy", "United States", "United Kingdom", "Iran", "South Korea"]
-tempt = [28]
+locations = ["Brazil", "Italy", "United States", "United Kingdom", "Iran", "South Korea", "Japan"]
+#tempt = [28]
 
 #for location in locations:
-location = "Iran"
+location = "Japan"
 plt.plot(df["date"][df["location"] == location], df["new_cases"][df["location"] == location], '-', label=location)
 
 plt.grid(axis='x', color='0.95')
