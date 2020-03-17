@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("confirmedGit.csv")
+df = pd.read_csv("../data/confirmedGit.csv")
 
 df.fillna("", inplace=True)
 df["Country"] = df["Province/State"] + df["Country/Region"]
@@ -23,4 +23,4 @@ for cc in countrys:
     out[out[cc] < 0] = 0
 out = out.append(lat)
 out = out.append(longt)
-out.to_csv("coronga.csv")
+out.to_csv("../input/newCases.csv")
