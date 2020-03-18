@@ -3,11 +3,8 @@ from functools import partial
 import pyproj
 from shapely.ops import transform
 from shapely.geometry import Point
-
-path = "../data/localData/"
-
-nc = pd.read_csv(path+"newCases.csv") # to gen run convertDataTo...
-tempt = pd.read_csv(path+"temperature.csv") # to gen run joinTempCsv...
+import geopandas
+import matplotlib.pyplot as plt
 
 proj_wgs84 = pyproj.Proj(init='epsg:4326')
 
@@ -25,3 +22,44 @@ def geodesic_point_buffer(lat, lon, km):
 # Example
 #b = geodesic_point_buffer(45.4, -75.7, 100.0)
 #print(b)
+
+
+path = "../data/localData/"
+
+nc = pd.read_csv(path+"newCases.csv") # to gen run convertDataTo...
+tempt = pd.read_csv(path+"temperature.csv") # to gen run joinTempCsv...
+
+#gnc = geopandas.GeoDataFrame(
+#    nc, geometry=geopandas.points_from_xy(nc.Longitude, nc.Latitude))
+print(nc.tail())
+print(nc.columns)
+countries = nc.columns
+del countries["Unnamed: 0"]
+del countries["date"]
+
+cases = 0
+radius = []
+
+if (cases > 0):
+    if (cases <= 5):
+        radius.append(4.0)
+    elif (cases <= 10):
+        radius.append(6.333333333333334)
+    elif (cases <= 25):
+        radius.append(8.666666666666668)
+    elif (cases <= 100):
+        radius.append(11.0)
+    elif (cases <= 200):
+        radius.append(13.333333333333336)
+    elif (cases <= 500):
+        radius.append(15.666666666666668)
+    elif (cases <= 1000):
+        radius.append(18.0)
+    elif (cases <= 2000):
+        radius.append(20.333333333333336)
+    elif (cases <= 5000):
+        radius.append(22.66666666666667)
+    elif (cases <= 70000):
+        radius.append(25.0)
+    else: # China
+        radius.append(60.0)

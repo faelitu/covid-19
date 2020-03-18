@@ -4,3 +4,4 @@ numpy
 lightgbm
 pyproj
 Shapely
+geopandas
