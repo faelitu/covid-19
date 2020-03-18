@@ -21,9 +21,9 @@ out = pd.DataFrame()
 out["date"] = df["index"]  
 for cc in countrys:
     out[cc] = df[cc] - dfAux[cc]
-    out[out[cc] < 0] = 0
+    out[cc][out[cc] < 0] = 0
 out = out.append(lat)
-out = out.append(longt)
+out = out.append(longt) 
 
 out["date"] = df["index"]
 
