@@ -5,3 +5,4 @@ lightgbm
 pyproj
 Shapely
 geopandas
+sklearn
