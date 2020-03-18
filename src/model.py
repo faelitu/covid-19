@@ -4,8 +4,6 @@ import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("../data/localData/newCases.csv")
-del df["Unnamed: 0"]   
-
 
 model = lgb.LGBMRegressor(objective='regression')
 
