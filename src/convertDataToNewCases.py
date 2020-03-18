@@ -24,4 +24,6 @@ for cc in countrys:
     out[out[cc] < 0] = 0
 out = out.append(lat)
 out = out.append(longt)
+
+out["date"] = df["index"]
 out.to_csv("../data/localData/newCases.csv")
