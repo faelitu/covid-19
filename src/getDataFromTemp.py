@@ -2,6 +2,8 @@ __author__ = "Bruno Vilela"
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+
 path = "../data/localData/"
 nc = pd.read_csv(path+"newCases.csv") # to gen run convertDataTo...
 temp = pd.read_csv(path+"temperature.csv") # to gen run joinTempCsv...
@@ -29,5 +31,32 @@ nc["d"] = R*nc["c"]
 #for i in range(0,450):
 nc["class"] = round((nc["d"] / classValue) - 450)
 
-nc.to_csv(path+"newCasesWithClass.csv")
-temp.to_csv(path+"temperatureWithClass.csv")
+days = []
+days = nc.columns
+days = days.drop(["lat", "long", "a", "c", "d", "class"])
+
+nc = nc.T
+bkp = nc.drop(days)
+nc = nc.drop(["lat", "long", "a", "c", "d", "class"], axis=0)
+nc = nc.replace(0, np.nan)
+nc = nc.reset_index()
+nc = nc.rename(columns={"index": "Date"})
+countries = nc.columns
+countries = countries.drop("Date")
+
+# Converting the column to DateTime format
+nc["Date"] = pd.to_datetime(days, format='%m/%d/%y')
+nc = nc.set_index('Date')
+
+# Imputing using interpolation
+for c in countries:
+    nc[c] = nc[c].interpolate(method='time')
+
+print(nc)
+print(bkp)
+
+nc.plot()
+plt.show()
+
+#nc.to_csv(path+"newCasesWithClass.csv")
+#temp.to_csv(path+"temperatureWithClass.csv")
