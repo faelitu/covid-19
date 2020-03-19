@@ -1,4 +1,4 @@
-__author__ = "Bruno Vilela"
+__author__ = "Bruno Vilela, Rafael Machado"
 
 import pandas as pd
 import numpy as np
@@ -31,6 +31,8 @@ nc["d"] = R*nc["c"]
 #for i in range(0,450):
 nc["class"] = round((nc["d"] / classValue) - 450)
 
+# ------------ Rafael's alterations below ----------- #
+
 days = []
 days = nc.columns
 days = days.drop(["lat", "long", "a", "c", "d", "class"])
@@ -57,6 +59,14 @@ print(bkp)
 
 nc.plot()
 plt.show()
+
+bkp = bkp.T
+nc = nc.T
+
+nc = nc.merge(bkp, left_index=True, right_index=True)
+
+print(nc)
+print(bkp)
 
 #nc.to_csv(path+"newCasesWithClass.csv")
 #temp.to_csv(path+"temperatureWithClass.csv")
