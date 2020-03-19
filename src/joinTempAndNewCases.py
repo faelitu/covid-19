@@ -101,6 +101,23 @@ for c in range(0, len(nc)):
 
 gnc["Area"] = area
 
-print(gnc.head())
+#print(gnc.head())
 
 # ---------- TEMPERATURE ----------
+
+#print(tempt.head())
+
+temp = tempt.groupby("NAME").agg('mean').reset_index()
+
+print(temp)
+
+meanTemps = pd.DataFrame()
+for c in range(0, len(nc)):
+    temps = pd.DataFrame()
+    for t in range(0, len(temp)):
+        if ((abs(nc["Latitude"].iloc[c] - temp["LATITUDE"].iloc[t])**2 + abs(nc["Longitude"].iloc[c] - temp["LONGITUDE"].iloc[t])**2)**(1/2) <= nc["Radius"].iloc[c]): # formula for checking if a point is inside a circle
+            temps.append(temp.iloc[t])
+    meanTemps.append(temps.mean(), ignore_index=True)
+
+print(meanTemps)
+print(temps)
