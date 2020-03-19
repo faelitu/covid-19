@@ -12,22 +12,27 @@ countrys = df.index
 model = None
 del df["lat"], df["long"]
 
-def split_data(train_data, country):
+def split_data(train_data, country, cl):
     train_data['index'] = pd.to_datetime(train_data['index'])
+    temp['DATE'] = pd.to_datetime(temp['DATE'])
     #train_data['month'] = train_data['index'].dt.month
     train_data['day'] = train_data['index'].dt.dayofweek
     #train_data['year'] = train_data['index'].dt.year
     y = train_data[country]
+
+    aux = temp.groupby(["class", "DATE"]).agg({"TEMP": "mean"}).reset_index()
+    train_data = train_data.merge(aux[aux["class"] == cl], left_on= "index", right_on= "DATE", how="left")
     del train_data[country], train_data['index']
-    aux = temp.groupby(["class", "DATE"]).agg({"TEMP": "mean"})
     train_x, test_x, train_y, test_y = train_test_split(train_data,y, test_size=0.01, random_state=2018)
     return (train_x, test_x, train_y, test_y)
 
 for country in ["HubeiChina"]: #countrys
     cc = df.loc[country]
+    cl = cc.loc["class"]
+    cc.drop(["a", "c", "d", "class"], inplace=True)
     cc = cc.reset_index()   
 
-    train_x, test_x, train_y, test_y = split_data(cc, country)
+    train_x, test_x, train_y, test_y = split_data(cc, country, cl)
 
     
     params = {
