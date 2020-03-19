@@ -57,7 +57,8 @@ for c in countries:
 print(nc)
 print(bkp)
 
-nc.plot()
+nc["Italy"].plot()
+nc["Brazil"].plot()
 plt.show()
 
 bkp = bkp.T
@@ -68,5 +69,5 @@ nc = nc.merge(bkp, left_index=True, right_index=True)
 print(nc)
 print(bkp)
 
-#nc.to_csv(path+"newCasesWithClass.csv")
-#temp.to_csv(path+"temperatureWithClass.csv")
+nc.to_csv(path+"newCasesWithClass_Interpolated.csv")
+temp.to_csv(path+"temperatureWithClass_Interpolated.csv")
