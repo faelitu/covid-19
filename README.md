@@ -28,7 +28,7 @@ pip3 install -r requirements.txt
 
 ## License
 
-Number of COVID-19 cases prediction of <a href='https://github.com/machadorafa'>Rafael Machado</a> and <a href='https://github.com/vilelabruno'>Bruno Vilela</a> is licensed with a License <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+This project by <a href='https://github.com/machadorafa'>Rafael Machado</a> and <a href='https://github.com/vilelabruno'>Bruno Vilela</a> is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Attribution-NonCommercial-ShareAlike 4.0 International</a>.
 
 See the [LICENSE.md](LICENSE.md) file for more details
 
