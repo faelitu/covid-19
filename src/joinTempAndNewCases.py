@@ -27,7 +27,7 @@ def geodesic_point_buffer(lat, lon, km):
 path = "../data/localData/"
 
 nc = pd.read_csv(path+"newCases.csv") # to gen run convertDataTo...
-tempt = pd.read_csv(path+"temperature.csv") # to gen run joinTempCsv...
+temp = pd.read_csv(path+"temperature.csv") # to gen run joinTempCsv...
 
 # ---------- CALCULATING RADIUS FOR NEW CASES ----------
 
@@ -40,32 +40,33 @@ nc["Total"] = nc.sum(axis=1).astype(int)
 
 cases = 0
 radius = []
+m = 1000
 for c in range(0, len(nc)):
     cases = nc["Total"].iloc[c]
     if (cases == 0):
-        radius.append(0.0)
+        radius.append(0.0 * m)
     elif (cases <= 5):
-        radius.append(4.0)
+        radius.append(4.0 * m)
     elif (cases <= 10):
-        radius.append(6.333333333333334)
+        radius.append(6.333333333333334 * m)
     elif (cases <= 25):
-        radius.append(8.666666666666668)
+        radius.append(8.666666666666668 * m)
     elif (cases <= 100):
-        radius.append(11.0)
+        radius.append(11.0 * m)
     elif (cases <= 200):
-        radius.append(13.333333333333336)
+        radius.append(13.333333333333336 * m)
     elif (cases <= 500):
-        radius.append(15.666666666666668)
+        radius.append(15.666666666666668 * m)
     elif (cases <= 1000):
-        radius.append(18.0)
+        radius.append(18.0 * m)
     elif (cases <= 2000):
-        radius.append(20.333333333333336)
+        radius.append(20.333333333333336 * m )
     elif (cases <= 5000):
-        radius.append(22.66666666666667)
+        radius.append(22.66666666666667 * m)
     elif (cases <= 70000):
-        radius.append(25.0)
+        radius.append(25.0 * m)
     else: # China
-        radius.append(60.0)
+        radius.append(60.0 * m)
 
 nc["Radius"] = radius
 nc["Latitude"] = latlong["lat"]
@@ -107,17 +108,45 @@ gnc["Area"] = area
 
 #print(tempt.head())
 
-temp = tempt.groupby("NAME").agg('mean').reset_index()
+temp = temp.rename(columns={"LATITUDE": "Latitude", "LONGITUDE": "Longitude"})
 
-print(temp)
+print(temp.columns)
+print(gnc)
 
-meanTemps = pd.DataFrame()
-for c in range(0, len(nc)):
-    temps = pd.DataFrame()
+#meanTemps = pd.DataFrame()
+#for c in range(0, len(gnc)):
+#    temps = pd.DataFrame()
+#    for t in range(0, len(temp)):
+#        if ((abs(gnc["Latitude"].iloc[c] - temp["LATITUDE"].iloc[t])**2 + abs(gnc["Longitude"].iloc[c] - temp["LONGITUDE"].iloc[t])**2)**(1/2) <= gnc["Radius"].iloc[c]): # formula for checking if a point is inside a circle
+#            temps.append(temp.iloc[t])
+#    meanTemps.append(temps.mean(), ignore_index=True)
+
+class Area:
+    def __init__(self, id, cLat, cLong, rad, area):
+        self.id = id
+        self.cLat = cLat
+        self.cLong = cLong
+        self.rad = rad
+        self.area = area
+
+def isInArea(xC, yC, xP, yP, R):
+    if (((abs(xC - xP)**2) + (abs(yC - yP)**2))**(1/2) <= R):
+        return True
+    return False
+
+gnc["AreaId"] = 0
+areas = []
+for c in range(0, len(gnc)):
+    areas.append(Area(c, gnc["Latitude"].iloc[c], gnc["Longitude"].iloc[c], gnc["Radius"].iloc[c], gnc["Area"].iloc[c]))
+    gnc["AreaId"].iloc[c] = c
+
+temp["AreaId"] = 0
+for a in areas:
     for t in range(0, len(temp)):
-        if ((abs(nc["Latitude"].iloc[c] - temp["LATITUDE"].iloc[t])**2 + abs(nc["Longitude"].iloc[c] - temp["LONGITUDE"].iloc[t])**2)**(1/2) <= nc["Radius"].iloc[c]): # formula for checking if a point is inside a circle
-            temps.append(temp.iloc[t])
-    meanTemps.append(temps.mean(), ignore_index=True)
+        if (isInArea(a.cLat, a.cLong, temp["Latitude"].iloc[t], temp["Longitude"].iloc[t], a.rad)):
+            temp["AreaId"] = a.id
 
-print(meanTemps)
-print(temps)
+print(temp["AreaId"])
+
+gnc.to_csv("../data/localData/treatNewCases.csv")
+temp.to_csv("../data/localData/treatTemperature.csv")
