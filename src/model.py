@@ -22,11 +22,11 @@ def split_data(train_data, country, cl):
 
     aux = temp.groupby(["class", "DATE"]).agg({"TEMP": "mean"}).reset_index()
     train_data = train_data.merge(aux[aux["class"] == cl], left_on= "index", right_on= "DATE", how="left")
-    del train_data[country], train_data['index']
+    del train_data[country], train_data['index'], train_data['DATE']
     train_x, test_x, train_y, test_y = train_test_split(train_data,y, test_size=0.01, random_state=2018)
     return (train_x, test_x, train_y, test_y)
 
-for country in ["HubeiChina"]: #countrys
+for country in countrys: #countrys
     cc = df.loc[country]
     cl = cc.loc["class"]
     cc.drop(["a", "c", "d", "class"], inplace=True)
@@ -65,7 +65,13 @@ for country in ["HubeiChina"]: #countrys
         model = lgb.train(params, lgb_train, 3000, valid_sets=[lgb_train, lgb_valid],early_stopping_rounds=50, verbose_eval=50, init_model = model)
     else:
         model = lgb.train(params, lgb_train, 3000, valid_sets=[lgb_train, lgb_valid],early_stopping_rounds=50, verbose_eval=50)
-    
+
+cc = df.loc["Brazil"]
+cl = cc.loc["class"]
+cc.drop(["a", "c", "d", "class"], inplace=True)
+cc = cc.reset_index()   
+train_x, test_x, train_y, test_y = split_data(cc, "Brazil", cl)  
+model.predict(test_x)
 #model = model(train_x,train_y,test_x,test_y)
 #del df["Unnamed: 0"]
 #y = df["3/15/20"]
