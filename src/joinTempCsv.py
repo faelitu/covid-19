@@ -1,4 +1,4 @@
-
+__author__ = "Bruno Vilela"
 import os, glob
 import pandas as pd
 

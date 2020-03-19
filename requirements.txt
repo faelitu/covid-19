@@ -1,8 +1,7 @@
 matplotlib
 pandas
 numpy
-keras
-tensorflow
+lightgbm
 pyproj
 Shapely
 geopandas

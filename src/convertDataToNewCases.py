@@ -1,3 +1,4 @@
+__author__ = "Bruno Vilela"
 import pandas as pd
 
 df = pd.read_csv("../data/confirmedGit.csv")
