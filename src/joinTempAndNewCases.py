@@ -42,7 +42,7 @@ nc["Total"] = nc.sum(axis=1).astype(int)
 
 cases = 0
 radius = []
-m = 1000
+m = 1
 for c in range(0, len(nc)):
     cases = nc["Total"].iloc[c]
     if (cases == 0):
@@ -76,7 +76,7 @@ nc["Longitude"] = latlong["long"]
 
 #print(nc.head())
 
-# ---------- CREATING GEO DATA FRAME ----------
+# ---------- CREATING GEO DATAFRAME ----------
 
 gnc = geopandas.GeoDataFrame(
     nc, geometry=geopandas.points_from_xy(nc.Longitude, nc.Latitude))
@@ -112,9 +112,6 @@ gnc["Area"] = area
 
 temp = temp.rename(columns={"LATITUDE": "Latitude", "LONGITUDE": "Longitude"})
 
-print(temp.columns)
-print(gnc)
-
 #meanTemps = pd.DataFrame()
 #for c in range(0, len(gnc)):
 #    temps = pd.DataFrame()
@@ -142,11 +139,17 @@ for c in range(0, len(gnc)):
     areas.append(Area(c, gnc["Latitude"].iloc[c], gnc["Longitude"].iloc[c], gnc["Radius"].iloc[c], gnc["Area"].iloc[c]))
     gnc["AreaId"].iloc[c] = c
 
+#temp["AreaId"] = 0
+#for a in areas:
+#    for t in range(0, len(temp)):
+#        if (isInArea(a.cLat, a.cLong, temp["Latitude"].iloc[t], temp["Longitude"].iloc[t], a.rad)):
+#            temp["AreaId"] = a.id
+
 temp["AreaId"] = 0
 for a in areas:
     temp["AreaId"][((a.cLat - temp["Latitude"])**2) + ((a.cLong - temp["Longitude"])**1/2)  <= a.rad] = a.id
 
-print(temp["AreaId"])
+print(temp)
 
-gnc.to_csv("../data/localData/treatNewCases.csv")
-temp.to_csv("../data/localData/treatTemperature.csv")
+#gnc.to_csv("../data/localData/treatNewCases.csv")
+#temp.to_csv("../data/localData/treatTemperature.csv")
