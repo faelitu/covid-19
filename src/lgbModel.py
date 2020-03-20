@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import lightgbm as lgb
-df = pd.read_csv("../data/localData/newCasesWithClass.csv") # to gen run getDataFromTemp
+df = pd.read_csv("../data/localData/newCasesWithClass_Interpolated.csv") # to gen run getDataFromTemp
 temp = pd.read_csv("../data/localData/temperatureWithClass.csv") # to gen run getDataFromTemp
 
 df.set_index("Unnamed: 0", inplace=True)
@@ -19,8 +19,11 @@ def split_data(train_data, country, cl):
     train_data['day'] = train_data['index'].dt.dayofweek
     #train_data['year'] = train_data['index'].dt.year
     y = train_data[country]
-
-    aux = temp.groupby(["class", "DATE"]).agg({"TEMP": "mean"}).reset_index()
+    aggs = {}
+    cols = ["TEMP", "ELEVATION"]
+    for col in cols:
+        aggs[col] = "mean"
+    aux = temp.groupby(["class", "DATE"]).agg(aggs).reset_index()
     train_data = train_data.merge(aux[aux["class"] == cl], left_on= "index", right_on= "DATE", how="left")
     del train_data[country], train_data['index'], train_data['DATE']
     train_x, test_x, train_y, test_y = train_test_split(train_data,y, test_size=0.2, random_state=2018)
