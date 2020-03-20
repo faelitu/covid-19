@@ -1,6 +1,7 @@
 __author__ = "Rafael Machado"
 
 import pandas as pd
+import numpy as np
 from functools import partial
 import pyproj
 from shapely.ops import transform
@@ -112,14 +113,6 @@ gnc["Area"] = area
 
 temp = temp.rename(columns={"LATITUDE": "Latitude", "LONGITUDE": "Longitude"})
 
-#meanTemps = pd.DataFrame()
-#for c in range(0, len(gnc)):
-#    temps = pd.DataFrame()
-#    for t in range(0, len(temp)):
-#        if ((abs(gnc["Latitude"].iloc[c] - temp["LATITUDE"].iloc[t])**2 + abs(gnc["Longitude"].iloc[c] - temp["LONGITUDE"].iloc[t])**2)**(1/2) <= gnc["Radius"].iloc[c]): # formula for checking if a point is inside a circle
-#            temps.append(temp.iloc[t])
-#    meanTemps.append(temps.mean(), ignore_index=True)
-
 class Area:
     def __init__(self, id, cLat, cLong, rad, area):
         self.id = id
@@ -133,23 +126,26 @@ def isInArea(xC, yC, xP, yP, R):
         return True
     return False
 
-gnc["AreaId"] = 0
+gnc["AreaId"] = np.nan
 areas = []
 for c in range(0, len(gnc)):
     areas.append(Area(c, gnc["Latitude"].iloc[c], gnc["Longitude"].iloc[c], gnc["Radius"].iloc[c], gnc["Area"].iloc[c]))
     gnc["AreaId"].iloc[c] = c
 
-#temp["AreaId"] = 0
-#for a in areas:
-#    for t in range(0, len(temp)):
-#        if (isInArea(a.cLat, a.cLong, temp["Latitude"].iloc[t], temp["Longitude"].iloc[t], a.rad)):
-#            temp["AreaId"] = a.id
-
-temp["AreaId"] = 0
+temp["AreaId"] = ""
 for a in areas:
-    temp["AreaId"][((a.cLat - temp["Latitude"])**2) + ((a.cLong - temp["Longitude"])**1/2)  <= a.rad] = a.id
+    temp["AreaId"][((a.cLat - temp["Latitude"])**2) + ((a.cLong - temp["Longitude"])**1/2)  <= a.rad] += str(a.id)+'&'
 
-print(temp)
+print('applying...') 
+temp["AreaId"] = temp["AreaId"].apply(lambda x: x.split("&")) # ESTOURA MEMÓRIA AQUI
 
 #gnc.to_csv("../data/localData/treatNewCases.csv")
 #temp.to_csv("../data/localData/treatTemperature.csv")
+
+print(temp["AreaId"])
+
+#print(gnc[["Latitude_x", "Longitude_x", "AreaId"]][gnc["TEMP"].isna()])
+#print(gnc[gnc["TEMP"].isna()].count())
+#print(gnc.count())
+
+#gnc.to_csv("../data/localData/joinedTempAndNewCases.csv")
