@@ -142,9 +142,7 @@ for c in range(0, len(gnc)):
 
 temp["AreaId"] = 0
 for a in areas:
-    for t in range(0, len(temp)):
-        if (isInArea(a.cLat, a.cLong, temp["Latitude"].iloc[t], temp["Longitude"].iloc[t], a.rad)):
-            temp["AreaId"] = a.id
+    temp["AreaId"][((a.cLat - temp["Latitude"])**2) + ((a.cLong - temp["Longitude"])**1/2)  <= a.rad] = a.id
 
 print(temp["AreaId"])
 

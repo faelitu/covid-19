@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 
 path = "../data/localData/"
 nc = pd.read_csv(path+"newCasesWithClass.csv") # to gen run getData...
-temp = pd.read_csv(path+"temperatureWithClass.csv") # to gen run getData...
-
+nc.set_index("Unnamed: 0", inplace=True)
 # ------------ Rafael's alterations below ----------- #
 
 days = []
@@ -47,4 +46,3 @@ print(nc)
 print(bkp)
 
 nc.to_csv(path+"newCasesWithClass_Interpolated.csv")
-temp.to_csv(path+"temperatureWithClass_Interpolated.csv")

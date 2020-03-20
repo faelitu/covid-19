@@ -1,7 +1,7 @@
 __author__ = "Bruno Vilela"
 import pandas as pd
 
-df = pd.read_csv("../data/confirmedGit.csv")
+df = pd.read_csv("../data/confirmedFixed.csv") # run fixData before
 
 df.fillna("", inplace=True)
 df["Country"] = df["Province/State"] + df["Country/Region"]
