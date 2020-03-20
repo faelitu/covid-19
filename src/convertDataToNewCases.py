@@ -23,9 +23,9 @@ out["date"] = df["index"]
 for cc in countrys:
     out[cc] = df[cc] - dfAux[cc]
     out[cc][out[cc] < 0] = 0
+
 out = out.append(lat)
 out = out.append(longt) 
-
 out["date"] = df["index"]
 
 out["date"].iloc[len(out)-2] = "lat"

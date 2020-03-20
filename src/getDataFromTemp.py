@@ -6,8 +6,8 @@ path = "../data/localData/"
 nc = pd.read_csv(path+"newCases.csv") # to gen run convertDataTo...
 temp = pd.read_csv(path+"temperature.csv") # to gen run joinTempCsv...
 
-fixedLat= -15.113181
-fixedLong = -94.132609
+fixedLat= -83.415313
+fixedLong = 72.089528
 R = 6371e3;
 
 classValue = 44478.46666666667
