@@ -1,3 +1,5 @@
+__author__ = "Rafael Machado"
+
 import pandas as pd
 from functools import partial
 import pyproj
