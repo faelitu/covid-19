@@ -28,7 +28,9 @@ pip3 install -r requirements.txt
 
 ## License
 
-This project is licensed under the CC0 - see the [LICENSE.md](LICENSE.md) file for details
+This project by <a href='https://github.com/machadorafa'>Rafael Machado</a> and <a href='https://github.com/vilelabruno'>Bruno Vilela</a> is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+
+See the [LICENSE.md](LICENSE.md) file for more details
 
 ## Acknowledgments
 
